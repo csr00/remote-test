@@ -1,0 +1,45 @@
+Dijkstra算法适用于带权图（权值非负），并且在图中没有负权边。其基本思想是逐步扩展已知的最短路径，直到找到从源节点到所有其他节点的最短路径。
+
+算法步骤
+初始化：
+
+为每个节点设置一个初始距离，源节点的距离为0，其余节点的距离为无穷大。
+创建一个优先队列（或最小堆）来存储节点及其当前最短距离。
+选择节点：
+
+从优先队列中选择距离源节点最近的未处理节点（称为当前节点）。
+更新邻接节点的距离：
+
+对当前节点的每个邻接节点，检查通过当前节点到达该邻接节点的距离。如果这个距离小于已知的距离，则更新这个邻接节点的距离，并将其加入优先队列。
+标记处理：
+
+将当前节点标记为已处理，表示其最短路径已确定。
+重复：
+
+重复步骤2到4，直到所有节点都被处理，或者优先队列为空（表示无法到达某些节点）。
+
+
+import heapq
+
+def dijkstra(graph, start):
+    # 初始化距离字典
+    distances = {node: float('infinity') for node in graph}
+    distances[start] = 0
+    priority_queue = [(0, start)]  # (距离, 节点)
+
+    while priority_queue:
+        current_distance, current_node = heapq.heappop(priority_queue)
+
+        # 如果当前距离大于已知最短距离，跳过
+        if current_distance > distances[current_node]:
+            continue
+
+        for neighbor, weight in graph[current_node].items():
+            distance = current_distance + weight
+
+            # 只在找到更短的路径时更新
+            if distance < distances[neighbor]:
+                distances[neighbor] = distance
+                heapq.heappush(priority_queue, (distance, neighbor))
+
+    return distances
