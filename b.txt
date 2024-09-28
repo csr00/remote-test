@@ -17,3 +17,38 @@
 使用两个指针分别指向左半部分和右半部分的开始位置，比较两个指针所指向的元素，将较小的元素放入临时数组中，并移动指针。
 处理完一部分后，将另一部分的剩余元素直接复制到临时数组中。
 复制回原数组：将临时数组中的元素复制回原数组的相应位置。
+
+
+
+function mergeSort(array):
+    if length(array) <= 1:
+        return array
+
+    mid = length(array) / 2
+    left = mergeSort(array[0:mid])
+    right = mergeSort(array[mid:length(array)])
+
+    return merge(left, right)
+
+function merge(left, right):
+    result = []
+    i = 0
+    j = 0
+
+    while i < length(left) and j < length(right):
+        if left[i] <= right[j]:
+            result.append(left[i])
+            i += 1
+        else:
+            result.append(right[j])
+            j += 1
+
+    while i < length(left):
+        result.append(left[i])
+        i += 1
+
+    while j < length(right):
+        result.append(right[j])
+        j += 1
+
+    return result
